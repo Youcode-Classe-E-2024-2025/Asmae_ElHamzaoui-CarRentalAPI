@@ -8,4 +8,12 @@ use Illuminate\Database\Eloquent\Model;
 class Car extends Model
 {
     use HasFactory;
+
+    protected $fillable = ['brand', 'model', 'year', 'price_per_day'];
+
+    public function rentals()
+    {
+        return $this->hasMany(Rental::class);
+    }
 }
+
