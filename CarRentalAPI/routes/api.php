@@ -25,14 +25,19 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::put('cars/{id}', [CarController::class, 'update']);
     Route::delete('cars/{id}', [CarController::class, 'destroy']);
     
-     // Locations
-     Route::post('rentals', [RentalController::class, 'store']);
-     Route::get('rentals', [RentalController::class, 'index']);
-     Route::get('rentals/{id}', [RentalController::class, 'show']);
-     Route::put('rentals/{id}', [RentalController::class, 'update']);
-     Route::delete('rentals/{id}', [RentalController::class, 'destroy']);
+    // Locations
+    Route::post('rentals', [RentalController::class, 'store']);
+    Route::get('rentals', [RentalController::class, 'index']);
+    Route::get('rentals/{id}', [RentalController::class, 'show']);
+    Route::put('rentals/{id}', [RentalController::class, 'update']);
+    Route::delete('rentals/{id}', [RentalController::class, 'destroy']);
  
-     
+    // Paiements
+    Route::post('payments', [PaymentController::class, 'store']);
+    Route::get('payments', [PaymentController::class, 'index']);
+    Route::get('payments/{id}', [PaymentController::class, 'show']);
+    Route::put('payments/{id}', [PaymentController::class, 'update']);
+    Route::delete('payments/{id}', [PaymentController::class, 'destroy']); 
        
 
 });
