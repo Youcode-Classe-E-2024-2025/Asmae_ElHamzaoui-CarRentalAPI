@@ -11,6 +11,15 @@ use App\Http\Controllers\PaymentController;
 Route::post('register', [UserController::class, 'store']); // Inscription
 Route::post('login', [UserController::class, 'login']);   // Connexion
 Route::get('cars', [CarController::class, 'index']);      // Liste des voitures disponibles
+// Routes protégées (nécessitent un token d'authentification)
+Route::middleware('auth:sanctum')->group(function () {
+    // Utilisateur
+    Route::get('users/{id}', [UserController::class, 'show']);
+    Route::put('users/{id}', [UserController::class, 'update']);
+    Route::delete('users/{id}', [UserController::class, 'destroy']);
+    Route::post('logout', [UserController::class, 'logout']); // Déconnexion
 
+
+});
 
 
