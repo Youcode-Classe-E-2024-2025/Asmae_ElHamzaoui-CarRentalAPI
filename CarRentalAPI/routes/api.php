@@ -19,6 +19,13 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::delete('users/{id}', [UserController::class, 'destroy']);
     Route::post('logout', [UserController::class, 'logout']); // Déconnexion
 
+    // Voitures
+    Route::post('cars', [CarController::class, 'store']);
+    Route::get('cars/{id}', [CarController::class, 'show']);
+    Route::put('cars/{id}', [CarController::class, 'update']);
+    Route::delete('cars/{id}', [CarController::class, 'destroy']);
+    
+       
 
 });
 
