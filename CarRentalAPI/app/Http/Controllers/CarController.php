@@ -8,10 +8,20 @@ use Illuminate\Http\Request;
 class CarController extends Controller
 {
     // Lire toutes les voitures
-    public function index()
+    public function index(Request $request)
     {
-        return Car::all();
+        $query = Car::query();
+    
+        if ($request->has('brand')) {
+            $query->where('brand', $request->brand);
+        }
+        if ($request->has('price_max')) {
+            $query->where('price_per_day', '<=', $request->price_max);
+        }
+    
+        return $query->paginate(10); // 10 résultats par page
     }
+    
 
     // Créer une voiture
     public function store(Request $request)
