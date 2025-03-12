@@ -8,10 +8,23 @@ use Illuminate\Http\Request;
 class RentalController extends Controller
 {
     // Lire toutes les locations
-    public function index()
-    {
-        return Rental::all();
+    public function index(Request $request)
+{
+    $query = Rental::query();
+
+    // Filtrer par utilisateur (s'il est passé dans la requête)
+    if ($request->has('user_id')) {
+        $query->where('user_id', $request->user_id);
     }
+    // Filtrer par voiture (s'il est passé dans la requête)
+    if ($request->has('car_id')) {
+        $query->where('car_id', $request->car_id);
+    }
+
+    // Appliquer la pagination
+    return $query->paginate(10);
+}
+
 
     // Créer une location
     public function store(Request $request)

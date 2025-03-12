@@ -8,10 +8,22 @@ use Illuminate\Http\Request;
 class PaymentController extends Controller
 {
     // Lire tous les paiements
-    public function index()
-    {
-        return Payment::all();
+    public function index(Request $request)
+{
+    $query = Payment::query();
+
+    // Filtrer par utilisateur ou location, si nécessaire
+    if ($request->has('user_id')) {
+        $query->where('user_id', $request->user_id);
     }
+    if ($request->has('rental_id')) {
+        $query->where('rental_id', $request->rental_id);
+    }
+
+    // Appliquer la pagination
+    return $query->paginate(10);
+}
+
 
     // Créer un paiement
     public function store(Request $request)
