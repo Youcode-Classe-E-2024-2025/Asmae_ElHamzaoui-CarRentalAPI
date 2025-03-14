@@ -7,41 +7,41 @@ use App\Http\Controllers\RentalController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\AuthController;
 
-//Routes publiques 
+// Public routes
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
-Route::get('cars', [CarController::class, 'index']);// Liste des voitures disponibles
+Route::get('/cars', [CarController::class, 'index']); // Only listing cars can be public
 
+// Protected routes
+Route::middleware(['auth:sanctum'])->group(function () {
+    // Auth
+    Route::post('/logout', [AuthController::class, 'logout']);
+    
+    // Cars management (admin only)
+    Route::prefix('cars')->group(function () {
+        Route::post('/', [CarController::class, 'store']);
+        Route::get('/{id}', [CarController::class, 'show']);
+        Route::put('/{id}', [CarController::class, 'update']);
+        Route::delete('/{id}', [CarController::class, 'destroy']);
+    });
 
-// Routes protégées (nécessitent un token d'authentification)
-Route::middleware('auth:sanctum')->group(function () {
-// Utilisateur
-Route::middleware('auth:sanctum')->group(function () {
-Route::post('/logout', [AuthController::class, 'logout']);
-Route::get('/me', [AuthController::class, 'me']);
+    // Rentals
+    Route::prefix('rentals')->group(function () {
+        Route::get('/', [RentalController::class, 'index']);
+        Route::post('/', [RentalController::class, 'store']);
+        Route::get('/{id}', [RentalController::class, 'show']);
+        Route::put('/{id}', [RentalController::class, 'update']);
+        Route::delete('/{id}', [RentalController::class, 'destroy']);
+    });
+
+    // Payments
+    Route::prefix('payments')->group(function () {
+        Route::post('/create-intent', [PaymentController::class, 'createPaymentIntent']);
+        Route::post('/confirm', [PaymentController::class, 'confirmPayment']);
+        Route::get('/', [PaymentController::class, 'index']);
+        Route::get('/{id}', [PaymentController::class, 'show']);
+        Route::put('/{id}', [PaymentController::class, 'update']);
+        Route::delete('/{id}', [PaymentController::class, 'destroy']);
+    });
 });
-// Voitures
-Route::post('cars', [CarController::class, 'store']);
-Route::get('cars/{id}', [CarController::class, 'show']);
-Route::put('cars/{id}', [CarController::class, 'update']);
-Route::delete('cars/{id}', [CarController::class, 'destroy']);
-
-// Locations
-Route::post('rentals', [RentalController::class, 'store']);
-Route::get('rentals', [RentalController::class, 'index']);
-Route::get('rentals/{id}', [RentalController::class, 'show']);
-Route::put('rentals/{id}', [RentalController::class, 'update']);
-Route::delete('rentals/{id}', [RentalController::class, 'destroy']);
-
-// Paiements
-Route::post('payments', [PaymentController::class, 'store']);
-Route::get('payments', [PaymentController::class, 'index']);
-Route::get('payments/{id}', [PaymentController::class, 'show']);
-Route::put('payments/{id}', [PaymentController::class, 'update']);
-Route::delete('payments/{id}', [PaymentController::class, 'destroy']); 
-   
-Route::post('/payments/create-intent', [PaymentController::class, 'createPaymentIntent']);
-Route::post('/payments/confirm', [PaymentController::class, 'confirmPayment']);
-});
-
 
